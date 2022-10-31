@@ -1,0 +1,21 @@
+import unittest
+from marqo.tensor_search.utils import construct_authorized_url
+from marqo import config
+
+
+class MarqoTestCase(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        local_opensearch_settings = {
+            "url": 'https://localhost:9200',
+            "main_user": "admin",
+            "main_password": "admin"
+        }
+        cls.client_settings = local_opensearch_settings
+        cls.authorized_url = construct_authorized_url(
+            url_base=cls.client_settings["url"],
+            username=cls.client_settings["main_user"],
+            password=cls.client_settings["main_password"]
+        )
+        cls.config = config.Config(url=cls.authorized_url)
